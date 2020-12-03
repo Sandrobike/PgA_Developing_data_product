@@ -1,0 +1,57 @@
+Caos theory example
+========================================================
+author: Alessandro Vasta
+date: 2 Dec 2020
+autosize: true
+A mathematical model of bacterial growth in a resource-limited environment
+
+========================================================
+
+
+- The plot presented on the next slides is a mathematical model of bacterial growth in a resource-limited environment. The ordinate shows the percentage of population possible on the basis of the actual available resources.
+- When the bacteria reproduction constant is below 3 the bacteria population find a stable population percentage equilibrium. 
+- for values > 3 and < 3.6 the population is unstable with a periodic behavior
+- for values > 3.6 the population became caotic, that is: completely irregular and apparently random.
+
+
+
+R Code of mathematical model
+========================================================
+
+```{r}
+caos <- function(n = 100, k, init) {
+    x <- rep(0,n)
+    x[1] <- init
+    for (i in 1:(n-1)) {
+        x[i+1] <- k*x[i]*(1 - x[i])
+        if (x[i+1] < 0) x[i+1] <- 0
+        if (x[i+1] > 1) x[i+1] <- 1
+    }
+    x
+}
+n <- 200
+Population <- caos(n, 4, 0.001)
+t <- seq(0,by=20,length.out = n)
+```
+
+Plot and histogram of population ratio  
+========================================================
+
+
+```{r, echo=FALSE, fig.height=4}
+plot(t,Population, type = "l",pch=10, ylim = c(0,1), 
+     main = "Population ratio growth")
+# draw the histogram of the population trend
+        hist(Population,breaks = 20, main = "Polulation ratio Histogram")
+```
+
+In this case k= 4 and the trend is caotic 
+
+
+Conclusions
+========================================================
+- The graph and histogram make this data look random, where the histogram is very similar to a beta distribution. The beta distribution is a suitable model for the random behavior of percentages and proportions
+(see <https://en.wikipedia.org/wiki/Beta_distribution>).
+- In reality the behavior is absolutely deterministic and similar to weather forecast where it is not possible to predict the long-term weather because it is not possible to know perfectly the initial conditions. In 1972 Edward Lorentz to underline this topic wrote: 
+does the flap of a butterfly’s wings in Brazil set off a tornado in Texas?
+
